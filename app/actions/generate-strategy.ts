@@ -3,9 +3,16 @@
 import { generateText } from "ai"
 import { openai } from "@ai-sdk/openai"
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+if (!OPENAI_API_KEY) {
+  throw new Error(
+    "OPENAI_API_KEY environment variable is missing. " + "Add it to your project settings or a local `.env` file.",
+  )
+}
+
 export async function generateBusinessStrategy(idea: string) {
   const { text } = await generateText({
-    model: openai("gpt-4o"),
+    model: openai("gpt-4o", { apiKey: OPENAI_API_KEY }),
     system: `You are AutoThinker, an AI business strategist that transforms raw business ideas into comprehensive startup blueprints. 
 
 Your task is to analyze the user's business idea and generate a structured business strategy that includes:

@@ -31,6 +31,7 @@ import { SocialAutomation } from "@/components/social-automation"
 import { EmailAutomation } from "@/components/email-automation"
 import { CRMIntegration } from "@/components/crm-integration"
 import { EcommerceBuilder } from "@/components/ecommerce-builder"
+import { CurrencySelector } from "@/components/currency-selector"
 
 export default function AutoThinkerHome() {
   const { user, loading } = useAuth()
@@ -82,6 +83,7 @@ export default function AutoThinkerHome() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <CurrencySelector />
               <Badge variant="secondary" className="bg-gradient-to-r from-blue-100 to-purple-100">
                 AI-Powered • CRM Integrated • E-commerce Ready
               </Badge>
