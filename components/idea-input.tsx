@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Zap, Mic, MicOff, Loader2, Upload, Sparkles } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Zap, Mic, MicOff, Loader2, Upload, Sparkles, AlertTriangle } from "lucide-react"
 import { generateComprehensiveStrategy } from "@/app/actions/generate-comprehensive-strategy"
 import { useStrategyStore } from "@/hooks/use-strategy-store"
 
@@ -17,6 +18,7 @@ export function IdeaInput() {
   const [budget, setBudget] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
   const [isListening, setIsListening] = useState(false)
+  const [showApiKeyWarning, setShowApiKeyWarning] = useState(false)
   const { setStrategy } = useStrategyStore()
 
   const industries = [
@@ -38,6 +40,8 @@ export function IdeaInput() {
     if (!idea.trim()) return
 
     setIsGenerating(true)
+    setShowApiKeyWarning(false)
+
     try {
       const result = await generateComprehensiveStrategy({
         idea,
@@ -45,9 +49,16 @@ export function IdeaInput() {
         targetMarket,
         budget,
       })
+
+      // Check if we got a demo response (indicates no API key)
+      if (!process.env.OPENAI_API_KEY) {
+        setShowApiKeyWarning(true)
+      }
+
       setStrategy(result)
     } catch (error) {
       console.error("Error generating strategy:", error)
+      setShowApiKeyWarning(true)
     } finally {
       setIsGenerating(false)
     }
@@ -94,6 +105,21 @@ export function IdeaInput() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* API Key Warning */}
+        {showApiKeyWarning && (
+          <Alert className="border-orange-200 bg-orange-50">
+            <AlertTriangle className="h-4 w-4 text-orange-600" />
+            <AlertDescription className="text-orange-800">
+              <strong>Demo Mode:</strong> Using sample strategy data. To get AI-powered results, add your OPENAI_API_KEY
+              to environment variables.
+              <br />
+              <code className="text-xs bg-orange-100 px-1 py-0.5 rounded mt-1 inline-block">
+                OPENAI_API_KEY=sk-your-key-here
+              </code>
+            </AlertDescription>
+          </Alert>
+        )}
+
         {/* Main Idea Input */}
         <div className="space-y-2">
           <label className="text-sm font-medium">Business Idea Description</label>
