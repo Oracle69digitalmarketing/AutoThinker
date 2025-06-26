@@ -1,17 +1,32 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Globe, DollarSign } from "lucide-react"
+import { Globe, DollarSign, Check } from "lucide-react"
 import { useCurrencyStore, SUPPORTED_CURRENCIES } from "@/hooks/use-currency-store"
 
 export function CurrencySelector() {
   const { selectedCurrency, setSelectedCurrency } = useCurrencyStore()
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <Button variant="outline" size="sm" className="flex items-center space-x-2">
+        <Globe className="w-4 h-4" />
+        <span>$</span>
+        <span className="hidden sm:inline">USD</span>
+      </Button>
+    )
+  }
 
   const handleCurrencyChange = (currencyCode: string) => {
     const currency = SUPPORTED_CURRENCIES.find((c) => c.code === currencyCode)
@@ -24,7 +39,7 @@ export function CurrencySelector() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center space-x-2">
+        <Button variant="outline" size="sm" className="flex items-center space-x-2 min-w-[80px]">
           <Globe className="w-4 h-4" />
           <span>{selectedCurrency.symbol}</span>
           <span className="hidden sm:inline">{selectedCurrency.code}</span>
@@ -39,28 +54,30 @@ export function CurrencySelector() {
                 <h3 className="font-semibold">Select Currency</h3>
               </div>
 
-              <Select value={selectedCurrency.code} onValueChange={handleCurrencyChange}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-60">
-                  {SUPPORTED_CURRENCIES.map((currency) => (
-                    <SelectItem key={currency.code} value={currency.code}>
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center space-x-2">
-                          <span className="font-mono text-sm">{currency.symbol}</span>
-                          <span>{currency.name}</span>
-                        </div>
-                        <Badge variant="secondary" className="ml-2">
-                          {currency.code}
-                        </Badge>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="grid gap-2 max-h-60 overflow-y-auto">
+                {SUPPORTED_CURRENCIES.map((currency) => (
+                  <button
+                    key={currency.code}
+                    onClick={() => handleCurrencyChange(currency.code)}
+                    className={`flex items-center justify-between w-full p-2 rounded-md hover:bg-gray-100 transition-colors ${
+                      selectedCurrency.code === currency.code ? "bg-blue-50 border border-blue-200" : ""
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span className="font-mono text-sm w-8">{currency.symbol}</span>
+                      <span className="text-sm">{currency.name}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="secondary" className="text-xs">
+                        {currency.code}
+                      </Badge>
+                      {selectedCurrency.code === currency.code && <Check className="w-4 h-4 text-blue-600" />}
+                    </div>
+                  </button>
+                ))}
+              </div>
 
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-gray-500 border-t pt-2">
                 <p>Exchange rates are approximate and updated regularly.</p>
                 <p className="mt-1">All prices are converted from USD base rates.</p>
               </div>

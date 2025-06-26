@@ -76,6 +76,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
     }),
     {
       name: "autothinker-currency-storage",
+      skipHydration: true,
     },
   ),
 )

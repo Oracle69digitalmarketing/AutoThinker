@@ -22,7 +22,7 @@ export function StrategyResults() {
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Target className="w-5 h-5 text-green-600" />
-            <span>Branding &amp; Identity</span>
+            <span>Branding & Identity</span>
           </CardTitle>
           <CardDescription>Names, tagline and core messaging</CardDescription>
         </CardHeader>
@@ -43,11 +43,11 @@ export function StrategyResults() {
             {branding.tagline}
           </p>
           <p>
-            <span className="font-medium">Elevator&nbsp;Pitch: </span>
+            <span className="font-medium">Elevator Pitch: </span>
             {branding.elevatorPitch}
           </p>
           <p>
-            <span className="font-medium">Value&nbsp;Proposition: </span>
+            <span className="font-medium">Value Proposition: </span>
             {branding.valueProposition}
           </p>
         </CardContent>
@@ -110,15 +110,15 @@ export function StrategyResults() {
               <h4 className="text-lg font-semibold">{persona.name}</h4>
               <p className="text-sm text-gray-600">{persona.demographics}</p>
               <p className="text-sm">
-                <span className="font-medium">Psychographics:&nbsp;</span>
+                <span className="font-medium">Psychographics: </span>
                 {persona.psychographics}
               </p>
               <p className="text-sm">
-                <span className="font-medium">Pain&nbsp;Points:&nbsp;</span>
+                <span className="font-medium">Pain Points: </span>
                 {persona.painPoints.join(", ")}
               </p>
               <p className="text-sm">
-                <span className="font-medium">Goals:&nbsp;</span>
+                <span className="font-medium">Goals: </span>
                 {persona.goals.join(", ")}
               </p>
             </div>

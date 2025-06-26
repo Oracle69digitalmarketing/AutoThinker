@@ -16,7 +16,6 @@ import {
   Building,
   Database,
   ShoppingCart,
-  GraduationCap,
 } from "lucide-react"
 import { IdeaInput } from "@/components/idea-input"
 import { StrategyResults } from "@/components/strategy-results"
@@ -33,11 +32,10 @@ import { EmailAutomation } from "@/components/email-automation"
 import { CRMIntegration } from "@/components/crm-integration"
 import { EcommerceBuilder } from "@/components/ecommerce-builder"
 import { CurrencySelector } from "@/components/currency-selector"
-import { TutorLinkDashboard } from "@/components/tutorlink-dashboard"
 
 export default function AutoThinkerHome() {
   const { user, loading } = useAuth()
-  const [activeTab, setActiveTab] = useState("tutorlink")
+  const [activeTab, setActiveTab] = useState("generate")
   const [showAuthModal, setShowAuthModal] = useState(false)
 
   const features = [
@@ -134,11 +132,7 @@ export default function AutoThinkerHome() {
         {/* Main Platform Interface */}
         <div className="max-w-7xl mx-auto">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-12 mb-8">
-              <TabsTrigger value="tutorlink" className="flex items-center space-x-1">
-                <GraduationCap className="w-3 h-3" />
-                <span className="text-xs">TutorLink</span>
-              </TabsTrigger>
+            <TabsList className="grid w-full grid-cols-11 mb-8">
               <TabsTrigger value="generate" className="flex items-center space-x-1">
                 <Brain className="w-3 h-3" />
                 <span className="text-xs">Generate</span>
@@ -184,10 +178,6 @@ export default function AutoThinkerHome() {
                 <span className="text-xs">Pricing</span>
               </TabsTrigger>
             </TabsList>
-
-            <TabsContent value="tutorlink" className="space-y-6">
-              <TutorLinkDashboard />
-            </TabsContent>
 
             <TabsContent value="generate" className="space-y-6">
               <IdeaInput />

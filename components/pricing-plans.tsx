@@ -1,133 +1,145 @@
+"use client"
+
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Check, Zap } from "lucide-react"
 import { useCurrencyStore } from "@/hooks/use-currency-store"
+import { useEffect, useState } from "react"
 
-export const PricingPlans = () => {
+type Plan = {
+  id: string
+  name: string
+  price: number // Store as USD base price
+  description: string
+  features: string[]
+  cta: string
+  highlight?: boolean
+}
+
+const plans: Plan[] = [
+  {
+    id: "starter",
+    name: "Starter",
+    price: 0, // Free
+    description: "Ideal for validating a single idea.",
+    features: ["1 Idea Workspace", "Basic Strategy Report", "Limited Marketing Copy", "Community Support"],
+    cta: "Get Started",
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    price: 29,
+    description: "For solo founders ready to launch.",
+    features: [
+      "Unlimited Ideas",
+      "Full Strategy Suite",
+      "Marketing & Funnel Hub",
+      "Export Center (PDF / Notion)",
+      "Email Support",
+    ],
+    cta: "Upgrade to Pro",
+    highlight: true,
+  },
+  {
+    id: "scale",
+    name: "Scale",
+    price: 99,
+    description: "Growth tools for small teams.",
+    features: ["All Pro features", "5 Team Seats", "Advanced Analytics", "Priority Support", "API Access & Webhooks"],
+    cta: "Start Scaling",
+  },
+]
+
+export function PricingPlans() {
   const { formatAmount } = useCurrencyStore()
+  const [mounted, setMounted] = useState(false)
 
-  return (
-    <div className="bg-white py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:text-center">
-          <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">Pricing</h2>
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Plans for every need
-          </p>
-          <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-            Choose the plan that best fits your needs. We offer flexible options to scale with your business.
-          </p>
-        </div>
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-        <div className="mt-10">
-          <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-            <div className="relative">
-              <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                  {/* Heroicon name: outline/check */}
-                  <svg
-                    className="h-6 w-6"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Basic</p>
-                <p className="ml-16 text-sm text-gray-500">{formatAmount(29)}/month</p>
-              </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
-                <ul>
-                  <li>Up to 5 users</li>
-                  <li>Basic analytics</li>
-                  <li>Community support</li>
-                </ul>
-              </dd>
-            </div>
-
-            <div className="relative">
-              <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                  {/* Heroicon name: outline/check */}
-                  <svg
-                    className="h-6 w-6"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Standard</p>
-                <p className="ml-16 text-sm text-gray-500">{formatAmount(99)}/month</p>
-              </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
-                <ul>
-                  <li>Up to 25 users</li>
-                  <li>Advanced analytics</li>
-                  <li>Priority support</li>
-                </ul>
-              </dd>
-            </div>
-
-            <div className="relative">
-              <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                  {/* Heroicon name: outline/check */}
-                  <svg
-                    className="h-6 w-6"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Premium</p>
-                <p className="ml-16 text-sm text-gray-500">{formatAmount(299)}/month</p>
-              </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
-                <ul>
-                  <li>Unlimited users</li>
-                  <li>Custom analytics</li>
-                  <li>24/7 support</li>
-                </ul>
-              </dd>
-            </div>
-
-            <div className="relative">
-              <dt>
-                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                  {/* Heroicon name: outline/check */}
-                  <svg
-                    className="h-6 w-6"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Enterprise</p>
-                <p className="ml-16 text-sm text-gray-500">{formatAmount(999)}/month</p>
-              </dt>
-              <dd className="mt-2 ml-16 text-base text-gray-500">
-                <ul>
-                  <li>Custom solutions</li>
-                  <li>Dedicated support</li>
-                  <li>On-premise options</li>
-                </ul>
-              </dd>
-            </div>
-          </dl>
+  if (!mounted) {
+    return (
+      <div className="space-y-6">
+        <Card className="border-0 shadow-none">
+          <CardHeader className="text-center">
+            <Badge variant="secondary" className="mx-auto mb-2">
+              <Zap className="w-4 h-4 mr-1" />
+              Flexible Pricing
+            </Badge>
+            <CardTitle className="text-4xl mb-2">Find the right plan for you</CardTitle>
+            <CardDescription>Start free, upgrade when you're ready to launch and grow.</CardDescription>
+          </CardHeader>
+        </Card>
+        <div className="grid md:grid-cols-3 gap-6">
+          {plans.map((plan) => (
+            <Card key={plan.id} className="animate-pulse">
+              <CardContent className="p-6 h-64 bg-gray-100 rounded-lg" />
+            </Card>
+          ))}
         </div>
       </div>
+    )
+  }
+
+  return (
+    <div className="space-y-6">
+      <Card className="border-0 shadow-none">
+        <CardHeader className="text-center">
+          <Badge variant="secondary" className="mx-auto mb-2">
+            <Zap className="w-4 h-4 mr-1" />
+            Flexible Pricing
+          </Badge>
+          <CardTitle className="text-4xl mb-2">Find the right plan for you</CardTitle>
+          <CardDescription>Start free, upgrade when you're ready to launch and grow.</CardDescription>
+        </CardHeader>
+      </Card>
+
+      <div className="grid md:grid-cols-3 gap-6">
+        {plans.map((plan) => (
+          <Card
+            key={plan.id}
+            className={`relative ${
+              plan.highlight ? "ring-2 ring-indigo-600 shadow-lg" : "hover:shadow-md"
+            } transition-shadow`}
+          >
+            {plan.highlight && (
+              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600">Most Popular</Badge>
+            )}
+
+            <CardHeader className="text-center">
+              <CardTitle>{plan.name}</CardTitle>
+              <p className="text-3xl font-bold mt-2">{plan.price === 0 ? "Free" : `${formatAmount(plan.price)}/mo`}</p>
+              <CardDescription className="mt-1">{plan.description}</CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-4">
+              <ul className="space-y-2">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-center space-x-2 text-sm">
+                    <Check className="w-4 h-4 text-green-600" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+
+            <CardFooter>
+              <Button className="w-full" variant={plan.highlight ? "default" : "outline"}>
+                {plan.cta}
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      <p className="text-xs text-muted-foreground text-center">
+        Need an Enterprise plan?{" "}
+        <a href="mailto:sales@autothinker.ai" className="underline">
+          Contact Sales
+        </a>
+      </p>
     </div>
   )
 }

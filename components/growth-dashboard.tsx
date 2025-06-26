@@ -4,12 +4,27 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { LineChart, Users, DollarSign, ShoppingCart } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useCurrencyStore } from "@/hooks/use-currency-store"
 
 export function GrowthDashboard() {
   const { formatAmount } = useCurrencyStore()
   const [activeTab, setActiveTab] = useState("overview")
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardContent className="p-6 h-96 bg-gray-100 rounded-lg animate-pulse" />
+        </Card>
+      </div>
+    )
+  }
 
   // Mock KPI data with currency formatting
   const kpis = [

@@ -12,234 +12,342 @@ interface StrategyInput {
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 
-// Demo strategy for when API key is not available
+// Enhanced demo strategy with more comprehensive data
 const generateDemoStrategy = (input: StrategyInput) => {
+  const ideaKeyword = input.idea.split(" ")[0] || "Business"
+
   return {
     branding: {
       businessNames: [
-        `${input.idea.split(" ")[0]}Pro`,
-        `Smart${input.idea.split(" ")[0]}`,
-        `${input.idea.split(" ")[0]}Hub`,
-        `Next${input.idea.split(" ")[0]}`,
-        `${input.idea.split(" ")[0]}Boost`,
-        `${input.idea.split(" ")[0]}Labs`,
-        `${input.idea.split(" ")[0]}Works`,
+        `${ideaKeyword}Pro`,
+        `Smart${ideaKeyword}`,
+        `${ideaKeyword}Hub`,
+        `Next${ideaKeyword}`,
+        `${ideaKeyword}Boost`,
+        `${ideaKeyword}Labs`,
+        `${ideaKeyword}Works`,
+        `${ideaKeyword}Connect`,
+        `${ideaKeyword}Flow`,
+        `${ideaKeyword}Sphere`,
       ],
-      tagline: "Transforming ideas into reality",
-      elevatorPitch: `Our innovative ${input.idea} solution addresses key market needs by providing exceptional value to ${input.targetMarket || "target customers"}. We combine cutting-edge technology with user-centric design to deliver results that matter. With our proven approach, we're positioned to capture significant market share in the ${input.industry || "target"} industry.`,
-      valueProposition: `We help ${input.targetMarket || "businesses"} achieve their goals through our ${input.idea} platform, delivering measurable results and exceptional user experience.`,
+      tagline: "Transforming ideas into reality, one innovation at a time",
+      elevatorPitch: `Our innovative ${input.idea} solution addresses critical market gaps by providing exceptional value to ${input.targetMarket || "target customers"}. We combine cutting-edge technology with user-centric design to deliver measurable results that matter. With our proven approach and deep industry expertise, we're positioned to capture significant market share in the rapidly growing ${input.industry || "target"} sector.`,
+      valueProposition: `We help ${input.targetMarket || "businesses"} achieve their goals through our comprehensive ${input.idea} platform, delivering measurable results, exceptional user experience, and sustainable growth opportunities.`,
       brandPersonality:
-        "Professional, innovative, and customer-focused with a modern approach to solving traditional challenges.",
+        "Professional, innovative, and customer-focused with a modern approach to solving traditional challenges while maintaining authenticity and trust.",
     },
     marketAnalysis: {
       swotAnalysis: {
         strengths: [
-          "Innovative approach",
+          "Innovative technology approach",
           "Strong technical foundation",
-          "Clear market need",
-          "Scalable solution",
-          "First-mover advantage",
+          "Clear market need identified",
+          "Scalable business model",
+          "First-mover advantage potential",
+          "Experienced founding team",
         ],
-        weaknesses: ["New to market", "Limited brand recognition", "Resource constraints", "Competition exists"],
+        weaknesses: [
+          "New brand in established market",
+          "Limited initial resources",
+          "Customer acquisition challenges",
+          "Dependency on key personnel",
+          "Technology development risks",
+        ],
         opportunities: [
           "Growing market demand",
-          "Digital transformation trend",
-          "Partnership potential",
-          "Global expansion",
-          "Emerging technologies",
+          "Digital transformation acceleration",
+          "Strategic partnership potential",
+          "International expansion possibilities",
+          "Emerging technology adoption",
+          "Regulatory support trends",
         ],
-        threats: ["Established competitors", "Economic uncertainty", "Technology changes", "Regulatory challenges"],
+        threats: [
+          "Established competitor responses",
+          "Economic uncertainty impacts",
+          "Rapid technology changes",
+          "Regulatory compliance challenges",
+          "Market saturation risks",
+          "Funding environment changes",
+        ],
       },
-      marketSize: `The ${input.industry || "target"} market is experiencing significant growth with increasing demand for innovative solutions. Market research indicates a potential addressable market of $2.5B+ with 15% annual growth.`,
-      competitors: ["Established Player A", "Startup Competitor B", "Traditional Solution C", "Enterprise Leader D"],
+      marketSize: `The ${input.industry || "target"} market is experiencing robust growth with a total addressable market (TAM) of approximately $12.5B globally. The serviceable addressable market (SAM) represents $2.8B, with our serviceable obtainable market (SOM) estimated at $180M over the next 5 years. Market research indicates 18% annual growth driven by digital adoption and changing consumer behaviors.`,
+      competitors: [
+        "Established Market Leader Corp",
+        "Innovative Startup Competitor",
+        "Traditional Solution Provider",
+        "Enterprise-focused Platform",
+        "Regional Market Player",
+      ],
       pricingStrategy:
-        "Competitive pricing with value-based tiers to capture different market segments, starting with freemium model to drive adoption.",
+        "Value-based tiered pricing model starting with freemium to drive adoption, followed by Pro ($29/month) and Enterprise ($99/month) tiers. Pricing 15% below premium competitors while offering superior value proposition.",
     },
     customerInsights: {
       personas: [
         {
-          name: "Primary User",
-          demographics: "25-45 years old, urban professionals, middle to high income",
-          psychographics: "Tech-savvy, efficiency-focused, values quality and convenience",
-          painPoints: ["Time constraints", "Complex existing solutions", "High costs", "Poor user experience"],
-          goals: ["Increase efficiency", "Reduce costs", "Improve outcomes", "Save time"],
-          acquisitionChannels: ["Digital marketing", "Social media", "Referrals", "Content marketing"],
+          name: "Primary Decision Maker",
+          demographics: "35-50 years old, urban/suburban professionals, $75K-150K income, college-educated",
+          psychographics:
+            "Results-oriented, values efficiency and ROI, early technology adopter, prefers proven solutions",
+          painPoints: [
+            "Time-consuming manual processes",
+            "Lack of integrated solutions",
+            "High implementation costs",
+            "Poor user experience with current tools",
+            "Difficulty measuring ROI",
+          ],
+          goals: [
+            "Increase operational efficiency",
+            "Reduce costs and complexity",
+            "Improve team productivity",
+            "Achieve measurable results",
+            "Stay competitive in market",
+          ],
+          acquisitionChannels: [
+            "LinkedIn and professional networks",
+            "Industry conferences and events",
+            "Content marketing and SEO",
+            "Referral programs",
+            "Direct sales outreach",
+          ],
         },
         {
-          name: "Secondary User",
-          demographics: "30-55 years old, business decision makers, high income",
-          psychographics: "Results-oriented, values ROI, prefers proven solutions",
-          painPoints: ["Budget constraints", "Implementation complexity", "Team adoption", "Measuring success"],
-          goals: ["Drive growth", "Optimize operations", "Competitive advantage", "Team productivity"],
-          acquisitionChannels: ["Industry events", "B2B partnerships", "Direct sales", "Thought leadership"],
+          name: "End User Champion",
+          demographics: "25-40 years old, tech-savvy professionals, $45K-85K income, diverse educational backgrounds",
+          psychographics:
+            "Innovation-focused, values user experience, influences purchasing decisions, seeks efficiency",
+          painPoints: [
+            "Complex software interfaces",
+            "Lack of mobile accessibility",
+            "Insufficient training resources",
+            "Limited customization options",
+            "Poor customer support",
+          ],
+          goals: [
+            "Streamline daily workflows",
+            "Access tools anywhere, anytime",
+            "Learn new skills and capabilities",
+            "Collaborate effectively with team",
+            "Advance career through efficiency",
+          ],
+          acquisitionChannels: [
+            "Social media platforms",
+            "Product hunt and tech communities",
+            "Peer recommendations",
+            "Free trial experiences",
+            "Educational content",
+          ],
         },
       ],
       customerJourney: [
-        "Awareness",
-        "Interest",
-        "Consideration",
-        "Trial",
-        "Purchase",
+        "Problem Recognition",
+        "Information Gathering",
+        "Solution Evaluation",
+        "Vendor Comparison",
+        "Trial/Demo Request",
+        "Purchase Decision",
+        "Implementation",
         "Onboarding",
         "Adoption",
-        "Retention",
+        "Optimization",
+        "Renewal/Expansion",
         "Advocacy",
       ],
     },
     productStrategy: {
       mvpFeatures: [
-        "User registration and authentication",
+        "User authentication and security",
         "Core functionality dashboard",
-        "Basic analytics and reporting",
-        "Mobile-responsive design",
+        "Real-time analytics and reporting",
+        "Mobile-responsive interface",
         "Customer support integration",
-        "Payment processing",
-        "User profile management",
-        "Search and filtering",
-        "Notification system",
-        "Data export capabilities",
-        "API access",
+        "Payment processing system",
+        "User profile and settings",
+        "Advanced search and filtering",
+        "Notification and alert system",
+        "Data export and backup",
+        "API access and integrations",
         "Team collaboration tools",
-        "Integration capabilities",
-        "Security features",
+        "Customizable workflows",
         "Performance monitoring",
+        "Security and compliance features",
       ],
       roadmap: {
-        month1: ["MVP development", "User testing", "Feedback collection", "Core feature refinement"],
-        month3: ["Feature enhancements", "Marketing launch", "User acquisition", "Partnership development"],
-        month6: ["Advanced features", "Scale operations", "International expansion", "Enterprise features"],
+        month1: [
+          "Complete MVP development",
+          "Conduct user acceptance testing",
+          "Implement security measures",
+          "Set up analytics tracking",
+          "Prepare launch materials",
+        ],
+        month3: [
+          "Launch beta program",
+          "Gather user feedback",
+          "Implement feature enhancements",
+          "Begin marketing campaigns",
+          "Establish customer support",
+          "Develop partnership pipeline",
+        ],
+        month6: [
+          "Full product launch",
+          "Scale customer acquisition",
+          "Add advanced features",
+          "Expand team capabilities",
+          "Explore new markets",
+          "Plan Series A funding",
+        ],
       },
       techRequirements: [
-        "Cloud hosting",
-        "Database management",
-        "API development",
+        "Cloud infrastructure (AWS/Azure)",
+        "Database management system",
+        "API development framework",
         "Security implementation",
-        "Analytics platform",
-        "CDN setup",
+        "Analytics and monitoring",
+        "CDN and performance optimization",
+        "Backup and disaster recovery",
+        "Compliance and data protection",
       ],
     },
     marketingGrowth: {
       goToMarket:
-        "Launch with targeted digital marketing campaign focusing on early adopters and key market segments, leveraging content marketing and strategic partnerships.",
+        "Multi-channel approach combining inbound marketing, strategic partnerships, and direct sales. Focus on content-driven lead generation, free trial conversions, and customer success stories to build market credibility and drive organic growth.",
       contentThemes: [
-        "Industry insights",
-        "How-to guides",
-        "Success stories",
-        "Product updates",
-        "Thought leadership",
-        "Case studies",
+        "Industry thought leadership",
+        "How-to guides and tutorials",
+        "Customer success stories",
+        "Product updates and features",
+        "Market trends and insights",
+        "Best practices and tips",
+        "Case studies and ROI analysis",
+        "Webinars and educational content",
       ],
       socialStrategy:
-        "Multi-platform approach with focus on LinkedIn, Twitter, and industry-specific communities, emphasizing thought leadership and customer success stories.",
+        "Professional-focused approach leveraging LinkedIn for B2B engagement, Twitter for thought leadership, and YouTube for educational content. Emphasis on building community around shared challenges and solutions.",
       emailSequence: [
-        "Welcome series",
-        "Product education",
-        "Success stories",
-        "Feature updates",
-        "Best practices",
-        "Community highlights",
+        "Welcome and onboarding series",
+        "Product education and tips",
+        "Customer success highlights",
+        "Feature announcements",
+        "Industry insights and trends",
+        "Community spotlights",
+        "Renewal and upsell campaigns",
       ],
     },
     financials: {
       revenueModel:
-        "Subscription-based with multiple tiers (Freemium, Pro, Enterprise) to serve different customer segments and maximize lifetime value.",
+        "Subscription-based SaaS model with freemium entry point. Three tiers: Free (limited features), Pro ($29/month), and Enterprise ($99/month). Additional revenue from professional services, training, and premium integrations.",
       costStructure: [
-        "Development costs",
-        "Marketing expenses",
-        "Operations",
-        "Customer support",
-        "Infrastructure",
-        "Legal and compliance",
+        "Technology infrastructure (25%)",
+        "Personnel and salaries (45%)",
+        "Marketing and sales (20%)",
+        "Operations and overhead (10%)",
       ],
-      breakEven: "Projected break-even within 12-18 months based on customer acquisition targets and retention rates.",
-      fundingNeeds: `Initial funding of ${input.budget || "$50,000-100,000"} for MVP development and market entry, with potential Series A of $500K-1M for scaling.`,
+      breakEven:
+        "Projected break-even at 18 months with 2,500 paying customers. Monthly recurring revenue target of $75K to achieve profitability based on current cost structure and growth projections.",
+      fundingNeeds: `Initial funding requirement of ${input.budget || "$250,000"} for MVP development and 12-month runway. Series A target of $2M for scaling operations, team expansion, and market penetration.`,
     },
     operations: {
       keyMetrics: [
-        "Monthly Recurring Revenue",
-        "Customer Acquisition Cost",
-        "Lifetime Value",
-        "Churn Rate",
-        "Net Promoter Score",
-        "Monthly Active Users",
+        "Monthly Recurring Revenue (MRR)",
+        "Customer Acquisition Cost (CAC)",
+        "Customer Lifetime Value (LTV)",
+        "Monthly Churn Rate",
+        "Net Promoter Score (NPS)",
+        "Monthly Active Users (MAU)",
+        "Feature Adoption Rate",
+        "Support Ticket Resolution Time",
       ],
       teamStructure: [
-        "Founder/CEO",
-        "Technical Lead",
-        "Marketing Manager",
-        "Customer Success",
-        "Sales Representative",
+        "CEO/Founder - Strategy and Vision",
+        "CTO - Technology Leadership",
+        "VP Marketing - Growth and Acquisition",
+        "Customer Success Manager",
+        "Senior Developer",
         "Product Manager",
+        "Sales Representative",
+        "Operations Coordinator",
       ],
-      techStack: ["React/Next.js", "Node.js", "PostgreSQL", "AWS/Vercel", "Stripe", "Analytics tools"],
+      techStack: [
+        "Frontend: React/Next.js",
+        "Backend: Node.js/Express",
+        "Database: PostgreSQL",
+        "Cloud: AWS/Vercel",
+        "Payments: Stripe",
+        "Analytics: Mixpanel/Google Analytics",
+        "Communication: Slack/Discord",
+        "Project Management: Linear/Notion",
+      ],
       risks: [
-        "Market competition",
-        "Technical challenges",
-        "Funding constraints",
-        "Team scaling",
-        "Regulatory changes",
-        "Economic downturn",
+        "Competitive market entry",
+        "Technology development delays",
+        "Customer acquisition challenges",
+        "Team scaling difficulties",
+        "Regulatory compliance changes",
+        "Economic downturn impacts",
+        "Funding availability",
+        "Key personnel dependency",
       ],
     },
   }
 }
 
 export async function generateComprehensiveStrategy(input: StrategyInput) {
-  // If no API key, return demo strategy
+  // If no API key, return enhanced demo strategy
   if (!OPENAI_API_KEY) {
-    console.warn("OPENAI_API_KEY not found, using demo strategy")
+    console.warn("OPENAI_API_KEY not found, using enhanced demo strategy")
     return generateDemoStrategy(input)
   }
 
   try {
     const { text } = await generateText({
       model: openai("gpt-4o"),
-      system: `You are AutoThinker, an advanced AI business strategist and co-founder that transforms raw business ideas into comprehensive, actionable startup blueprints.
+      system: `You are AutoThinker, an advanced AI business strategist and co-founder that transforms raw business ideas into comprehensive, actionable startup blueprints. You have deep expertise across industries, markets, and business models.
 
-Your task is to analyze the business idea and generate a complete strategy that includes:
+Your task is to analyze the business idea and generate a complete, professional-grade strategy that includes:
 
 1. BRANDING & IDENTITY:
-   - 7-10 creative business name suggestions
+   - 10 creative, memorable business name suggestions
    - Compelling tagline (under 10 words)
-   - 3-sentence elevator pitch
-   - Clear value proposition statement
-   - Brand personality and tone
+   - 4-sentence elevator pitch with clear value proposition
+   - Detailed value proposition statement
+   - Brand personality and tone guidelines
 
 2. MARKET ANALYSIS:
-   - SWOT analysis with 4-5 items in each category
-   - Market size and opportunity assessment
-   - Competitive landscape analysis
-   - Pricing strategy recommendations
+   - Comprehensive SWOT analysis with 5-6 items in each category
+   - Market size analysis (TAM, SAM, SOM)
+   - Competitive landscape with 5+ competitors
+   - Detailed pricing strategy with rationale
 
 3. CUSTOMER INSIGHTS:
-   - 3-4 detailed customer personas with demographics, psychographics, pain points, and goals
-   - Customer journey mapping
-   - Acquisition channels and strategies
+   - 2-3 detailed customer personas with complete profiles
+   - Customer journey mapping with 10+ stages
+   - Acquisition channels ranked by effectiveness
+   - Pain points and goals analysis
 
 4. PRODUCT STRATEGY:
-   - 10-15 MVP features prioritized by importance
-   - Product roadmap for first 6 months
-   - Technical requirements and considerations
+   - 15+ MVP features prioritized by importance and impact
+   - Detailed 6-month product roadmap
+   - Technical requirements and architecture
+   - Feature development timeline
 
 5. MARKETING & GROWTH:
-   - Go-to-market strategy
-   - Content marketing themes
-   - Social media strategy outline
-   - Email marketing sequence ideas
+   - Comprehensive go-to-market strategy
+   - Content marketing themes and calendar
+   - Multi-channel social media strategy
+   - Email marketing automation sequences
 
 6. FINANCIAL PROJECTIONS:
-   - Revenue model recommendations
-   - Cost structure analysis
-   - Break-even analysis
-   - Funding requirements
+   - Revenue model with multiple streams
+   - Detailed cost structure breakdown
+   - Break-even analysis with timeline
+   - Funding requirements and milestones
 
 7. OPERATIONAL FRAMEWORK:
-   - Key metrics to track
-   - Team structure recommendations
-   - Technology stack suggestions
-   - Risk assessment and mitigation
+   - Key performance indicators (KPIs)
+   - Organizational structure and roles
+   - Technology stack recommendations
+   - Risk assessment and mitigation strategies
 
-Return your response as a valid JSON object with this structure:
+Return your response as a valid JSON object with this exact structure:
 {
   "branding": {
     "businessNames": ["Name1", "Name2", ...],
@@ -301,19 +409,19 @@ Return your response as a valid JSON object with this structure:
   }
 }
 
-Be specific, actionable, and realistic. Consider the industry, target market, and budget constraints provided.`,
+Be specific, actionable, and realistic. Consider industry trends, market dynamics, and competitive landscape. Provide data-driven insights where possible.`,
       prompt: `Business Idea: ${input.idea}
 Industry: ${input.industry || "Not specified"}
 Target Market: ${input.targetMarket || "Not specified"}
 Budget: ${input.budget || "Not specified"}
 
-Generate a comprehensive business strategy for this idea.`,
+Generate a comprehensive, professional-grade business strategy for this idea. Focus on actionable insights and realistic projections.`,
     })
 
     return JSON.parse(text)
   } catch (error) {
     console.error("Error generating comprehensive strategy:", error)
-    // Fallback to demo strategy if AI fails
+    // Fallback to enhanced demo strategy if AI fails
     return generateDemoStrategy(input)
   }
 }
