@@ -54,6 +54,81 @@ export function ToolRecommendations() {
       setTools(recommendations)
     } catch (error) {
       console.error("Error getting tool recommendations:", error)
+      // Set fallback tools if API fails
+      setTools([
+        {
+          name: "Vercel",
+          category: "website",
+          description: "Modern web hosting and deployment platform with global CDN",
+          pricing: "Free tier available, Pro from $20/mo",
+          rating: 4.8,
+          features: ["Instant deployments", "Global CDN", "Serverless functions", "Analytics"],
+          integrations: ["GitHub", "GitLab", "Bitbucket", "Figma"],
+          setupComplexity: "Easy",
+          url: "https://vercel.com",
+          recommended: true,
+        },
+        {
+          name: "Stripe",
+          category: "finance",
+          description: "Complete payment processing platform for online businesses",
+          pricing: "2.9% + 30¢ per transaction",
+          rating: 4.7,
+          features: ["Payment processing", "Subscription billing", "Fraud protection", "Global payments"],
+          integrations: ["Shopify", "WooCommerce", "QuickBooks", "Xero"],
+          setupComplexity: "Medium",
+          url: "https://stripe.com",
+          recommended: true,
+        },
+        {
+          name: "Mailchimp",
+          category: "marketing",
+          description: "All-in-one marketing platform for email campaigns and automation",
+          pricing: "Free up to 500 contacts, paid plans from $13/mo",
+          rating: 4.5,
+          features: ["Email campaigns", "Marketing automation", "Landing pages", "Analytics"],
+          integrations: ["Shopify", "WordPress", "Facebook", "Instagram"],
+          setupComplexity: "Easy",
+          url: "https://mailchimp.com",
+          recommended: true,
+        },
+        {
+          name: "Google Analytics",
+          category: "analytics",
+          description: "Comprehensive web analytics and reporting platform",
+          pricing: "Free with premium features in GA4",
+          rating: 4.6,
+          features: ["Traffic analysis", "Conversion tracking", "Audience insights", "Real-time data"],
+          integrations: ["Google Ads", "Search Console", "Tag Manager", "Data Studio"],
+          setupComplexity: "Medium",
+          url: "https://analytics.google.com",
+          recommended: true,
+        },
+        {
+          name: "Slack",
+          category: "communication",
+          description: "Team collaboration and communication platform",
+          pricing: "Free tier available, Pro from $7.25/user/mo",
+          rating: 4.4,
+          features: ["Team messaging", "File sharing", "Video calls", "App integrations"],
+          integrations: ["Google Drive", "Trello", "Zoom", "GitHub"],
+          setupComplexity: "Easy",
+          url: "https://slack.com",
+          recommended: true,
+        },
+        {
+          name: "Notion",
+          category: "productivity",
+          description: "All-in-one workspace for notes, docs, and project management",
+          pricing: "Free for personal use, Team from $10/user/mo",
+          rating: 4.7,
+          features: ["Note-taking", "Project management", "Database", "Templates"],
+          integrations: ["Google Drive", "Slack", "Figma", "GitHub"],
+          setupComplexity: "Easy",
+          url: "https://notion.so",
+          recommended: true,
+        },
+      ])
     } finally {
       setLoading(false)
     }

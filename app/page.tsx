@@ -16,12 +16,14 @@ import {
   Building,
   Database,
   ShoppingCart,
+  Wrench,
 } from "lucide-react"
 import { IdeaInput } from "@/components/idea-input"
 import { StrategyResults } from "@/components/strategy-results"
 import { MarketingHub } from "@/components/marketing-hub"
 import { GrowthDashboard } from "@/components/growth-dashboard"
 import { PricingPlans } from "@/components/pricing-plans"
+import { ToolRecommendations } from "@/components/tool-recommendations"
 import { useAuth } from "@/hooks/use-auth"
 import { AuthModal } from "@/components/auth-modal"
 import { MarketValidation } from "@/components/market-validation"
@@ -52,13 +54,13 @@ export default function AutoThinkerHome() {
       color: "text-purple-600",
     },
     {
-      icon: Globe,
+      icon: Wrench,
       title: "Tool Integration",
       description: "Connect with 100+ business tools and platforms",
       color: "text-green-600",
     },
     {
-      icon: DollarSign,
+      icon: TrendingUp,
       title: "Growth Analytics",
       description: "Track performance and optimize your strategy",
       color: "text-orange-600",
@@ -132,10 +134,14 @@ export default function AutoThinkerHome() {
         {/* Main Platform Interface */}
         <div className="max-w-7xl mx-auto">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-11 mb-8">
+            <TabsList className="grid w-full grid-cols-12 mb-8">
               <TabsTrigger value="generate" className="flex items-center space-x-1">
                 <Brain className="w-3 h-3" />
                 <span className="text-xs">Generate</span>
+              </TabsTrigger>
+              <TabsTrigger value="tools" className="flex items-center space-x-1">
+                <Wrench className="w-3 h-3" />
+                <span className="text-xs">Tools</span>
               </TabsTrigger>
               <TabsTrigger value="validate" className="flex items-center space-x-1">
                 <Target className="w-3 h-3" />
@@ -182,6 +188,10 @@ export default function AutoThinkerHome() {
             <TabsContent value="generate" className="space-y-6">
               <IdeaInput />
               <StrategyResults />
+            </TabsContent>
+
+            <TabsContent value="tools" className="space-y-6">
+              <ToolRecommendations />
             </TabsContent>
 
             <TabsContent value="validate" className="space-y-6">
