@@ -1,17 +1,16 @@
 // autothinker_backend/src/ai/ai.service.ts
 import { Injectable } from '@nestjs/common';
-import { OpenAI } from 'langchain/llms/openai'; // This module should now be found
-import { PromptTemplate } from 'langchain/prompts'; // This module should now be found
+import { OpenAI } from 'langchain/llms/openai';
+import { PromptTemplate } from 'langchain/prompts';
 import { ConfigService } from '../config/config.service';
 
 @Injectable()
 export class AiService {
-  private openai: OpenAI; // Ensure this is defined if not already
+  private openai: OpenAI;
 
   constructor(private configService: ConfigService) {
     this.openai = new OpenAI({
-      // Corrected: call the getter method
-      openAIApiKey: this.configService.getOpenAiApiKey(),
+      openAIApiKey: this.configService.getOpenAiApiKey(), // CORRECTED LINE
       temperature: 0.7,
     });
   }
@@ -22,6 +21,9 @@ export class AiService {
       inputVariables: ["prompt"],
     });
 
+    // Ensure 'langchain/chains' is correctly imported or 'require'd if needed
+    // The previous error for 'langchain/llms/openai' and 'langchain/prompts'
+    // should be fixed by the npm install command you ran earlier.
     const chain = new (require('langchain/chains')).LLMChain({
       llm: this.openai,
       prompt: template,
