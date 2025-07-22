@@ -1,58 +1,49 @@
-import { Controller, Post, Body, Res, HttpStatus } from '@nestjs/common';
+// autothinker_backend/src/generate/generate.controller.ts
+import { Body, Controller, Post } from '@nestjs/common';
+import { GenerateService } from './generate.service';
 import { GenerateDto } from './dto/generate.dto';
-import { AiService } from '../ai/ai.service';
-import { SupabaseService } from '../supabase/supabase.service';
-import { Response } from 'express'; // Import Response from express for explicit typing
+import { AiService } from '../ai/ai.service'; // Ensure this path is correct
+import { SupabaseService } from '../supabase/supabase.service'; // Ensure this path is correct
 
-@Controller('api/generate')
+@Controller('generate')
 export class GenerateController {
   constructor(
-    private readonly aiService: AiService,
-    private readonly supabaseService: SupabaseService,
+    private readonly generateService: GenerateService,
+    private readonly aiService: AiService, // Inject AiService
+    private readonly supabaseService: SupabaseService, // Inject SupabaseService
   ) {}
 
   @Post()
-  async generateBlueprint(
-    @Body() generateDto: GenerateDto,
-    @Res() res: Response // Use @Res() to directly control the response
-  ) {
-    const { idea, mode, output_format } = generateDto; // Output format currently for future implementation
+  async generateComprehensiveStrategy(@Body() generateDto: GenerateDto) {
+    const { idea, industry, targetMarket, budget, mode, output_format } = generateDto;
 
-    try {
-      // 1. Generate blueprint using AI service
-      const blueprint = await this.aiService.generateBusinessBlueprint(idea, mode);
+    // Corrected method call: generateStrategy
+    const blueprint = await this.aiService.generateStrategy(idea);
 
-      // 2. Store the generated blueprint in Supabase
-      // For MVP, we're just inserting the core data. Add user_id later with auth.
-      const { data, error } = await this.supabaseService.client
-        .from('blueprints') // Ensure you have a 'blueprints' table in Supabase
-        .insert([{
-          idea: idea,
-          mode: mode,
-          generated_content: blueprint, // Store the JSON output
-          created_at: new Date().toISOString()
-        }]);
+    // Corrected method call: getClient()
+    const supabaseClient = this.supabaseService.getClient();
 
-      if (error) {
-        console.error('Supabase insertion error:', error);
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Failed to save blueprint.', error: error.message });
-      }
-
-      // 3. Return the generated content to the frontend
-      // Currently, we're returning JSON regardless of output_format for MVP.
-      // The `output_format` will dictate frontend rendering or specific backend export functions later.
-      return res.status(HttpStatus.OK).json({
-        message: 'Blueprint generated and saved successfully.',
-        blueprint: blueprint,
-        savedData: data, // Optional: show what Supabase returned
+    // Placeholder: You'll want to refine how you save this
+    // For now, let's just save the blueprint as an example
+    const { data, error } = await supabaseClient
+      .from('strategies') // Make sure 'strategies' is your actual table name
+      .insert({
+        idea,
+        industry,
+        target_market: targetMarket,
+        budget,
+        mode,
+        output_format,
+        blueprint, // Save the generated blueprint
+        created_at: new Date().toISOString(),
       });
 
-    } catch (error) {
-      console.error('Error generating or storing blueprint:', error);
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        message: 'Internal server error during blueprint generation.',
-        error: error.message,
-      });
+    if (error) {
+      console.error('Error saving to Supabase:', error);
+      // Depending on your error handling, you might throw an Http Exception
+      return { status: 'error', message: 'Failed to save strategy to database.' };
     }
+
+    return { status: 'success', strategy: blueprint };
   }
 }
