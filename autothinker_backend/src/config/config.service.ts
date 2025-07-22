@@ -1,3 +1,4 @@
+// autothinker_backend/src/config/config.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
 
@@ -5,15 +6,20 @@ import { ConfigService as NestConfigService } from '@nestjs/config';
 export class ConfigService {
   constructor(private nestConfigService: NestConfigService) {}
 
-  get supabaseUrl(): string {
-    return this.nestConfigService.get<string>('SUPABASE_URL');
+  getSupabaseUrl(): string {
+    return this.nestConfigService.get<string>('SUPABASE_URL')!; // Added !
   }
 
-  get supabaseAnonKey(): string {
-    return this.nestConfigService.get<string>('SUPABASE_ANON_KEY');
+  getSupabaseAnonKey(): string {
+    return this.nestConfigService.get<string>('SUPABASE_ANON_KEY')!; // Added !
   }
 
-  get openaiApiKey(): string {
-    return this.nestConfigService.get<string>('OPENAI_API_KEY');
+  getOpenAiApiKey(): string {
+    return this.nestConfigService.get<string>('OPENAI_API_KEY')!; // Added !
+  }
+
+  // Add a getter for the port if you have one, or other variables
+  getPort(): number {
+    return parseInt(this.nestConfigService.get<string>('PORT', '3000'), 10);
   }
 }
