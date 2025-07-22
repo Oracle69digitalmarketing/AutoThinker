@@ -27,6 +27,7 @@ export function IdeaInput() {
   const industries = [
     "Technology",
     "Healthcare",
+    "Agriculture",
     "Finance",
     "E-commerce",
     "Education",
