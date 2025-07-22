@@ -1,18 +1,24 @@
+// src/app/actions/generate-comprehensive-strategy.ts
 "use server"
 
-import { generateText } from "ai"
-import { openai } from "@ai-sdk/openai"
+// We will remove AI SDK imports as we are now calling our own backend
+// import { generateText } from "ai"
+// import { openai } from "@ai-sdk/openai"
 
 interface StrategyInput {
   idea: string
   industry?: string
   targetMarket?: string
   budget?: string
+  mode: 'branding' | 'funnel' | 'all'; // Added to match backend DTO
+  output_format: 'react' | 'json' | 'pdf'; // Added to match backend DTO
 }
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+// Define your backend URL using a public environment variable for Vercel
+// Or hardcode it directly if you prefer for now (less flexible)
+const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://autothinker.onrender.com"; // Your Render Backend URL
 
-// Enhanced demo strategy with more comprehensive data
+// Enhanced demo strategy (remains the same for fallback)
 const generateDemoStrategy = (input: StrategyInput) => {
   const ideaKeyword = input.idea.split(" ")[0] || "Business"
 
@@ -243,7 +249,7 @@ const generateDemoStrategy = (input: StrategyInput) => {
       ],
       breakEven:
         "Projected break-even at 18 months with 2,500 paying customers. Monthly recurring revenue target of $75K to achieve profitability based on current cost structure and growth projections.",
-      fundingNeeds: `Initial funding requirement of ${input.budget || "$250,000"} for MVP development and 12-month runway. Series A target of $2M for scaling operations, team expansion, and market penetration.`,
+      fundingNeeds: `${input.budget || "$250,000"}`,
     },
     operations: {
       keyMetrics: [
@@ -291,137 +297,40 @@ const generateDemoStrategy = (input: StrategyInput) => {
 }
 
 export async function generateComprehensiveStrategy(input: StrategyInput) {
-  // If no API key, return enhanced demo strategy
-  if (!OPENAI_API_KEY) {
-    console.warn("OPENAI_API_KEY not found, using enhanced demo strategy")
-    return generateDemoStrategy(input)
-  }
+  // We will remove this check as our backend will handle AI key validation
+  // if (!OPENAI_API_KEY) {
+  //   console.warn("OPENAI_API_KEY not found, using enhanced demo strategy")
+  //   return generateDemoStrategy(input)
+  // }
 
   try {
-    const { text } = await generateText({
-      model: openai("gpt-4o"),
-      system: `You are AutoThinker, an advanced AI business strategist and co-founder that transforms raw business ideas into comprehensive, actionable startup blueprints. You have deep expertise across industries, markets, and business models.
+    // --- THIS IS THE CRUCIAL CHANGE ---
+    // Make a fetch request to your deployed NestJS backend
+    const response = await fetch(`${BACKEND_BASE_URL}/api/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Ensure the payload matches the GenerateDto on your backend
+      body: JSON.stringify({
+        idea: input.idea,
+        mode: input.mode || 'all', // Default to 'all' if not provided
+        output_format: input.output_format || 'json', // Default to 'json' if not provided
+      }),
+    });
 
-Your task is to analyze the business idea and generate a complete, professional-grade strategy that includes:
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Backend API error:', errorData);
+      throw new Error(`Backend API responded with status ${response.status}: ${errorData.message || 'Unknown error'}`);
+    }
 
-1. BRANDING & IDENTITY:
-   - 10 creative, memorable business name suggestions
-   - Compelling tagline (under 10 words)
-   - 4-sentence elevator pitch with clear value proposition
-   - Detailed value proposition statement
-   - Brand personality and tone guidelines
+    const data = await response.json();
+    return data.blueprint; // Assuming your backend returns { message: ..., blueprint: {...} }
 
-2. MARKET ANALYSIS:
-   - Comprehensive SWOT analysis with 5-6 items in each category
-   - Market size analysis (TAM, SAM, SOM)
-   - Competitive landscape with 5+ competitors
-   - Detailed pricing strategy with rationale
-
-3. CUSTOMER INSIGHTS:
-   - 2-3 detailed customer personas with complete profiles
-   - Customer journey mapping with 10+ stages
-   - Acquisition channels ranked by effectiveness
-   - Pain points and goals analysis
-
-4. PRODUCT STRATEGY:
-   - 15+ MVP features prioritized by importance and impact
-   - Detailed 6-month product roadmap
-   - Technical requirements and architecture
-   - Feature development timeline
-
-5. MARKETING & GROWTH:
-   - Comprehensive go-to-market strategy
-   - Content marketing themes and calendar
-   - Multi-channel social media strategy
-   - Email marketing automation sequences
-
-6. FINANCIAL PROJECTIONS:
-   - Revenue model with multiple streams
-   - Detailed cost structure breakdown
-   - Break-even analysis with timeline
-   - Funding requirements and milestones
-
-7. OPERATIONAL FRAMEWORK:
-   - Key performance indicators (KPIs)
-   - Organizational structure and roles
-   - Technology stack recommendations
-   - Risk assessment and mitigation strategies
-
-Return your response as a valid JSON object with this exact structure:
-{
-  "branding": {
-    "businessNames": ["Name1", "Name2", ...],
-    "tagline": "Your compelling tagline",
-    "elevatorPitch": "Your elevator pitch...",
-    "valueProposition": "Your value proposition...",
-    "brandPersonality": "Brand personality description"
-  },
-  "marketAnalysis": {
-    "swotAnalysis": {
-      "strengths": ["Strength 1", ...],
-      "weaknesses": ["Weakness 1", ...],
-      "opportunities": ["Opportunity 1", ...],
-      "threats": ["Threat 1", ...]
-    },
-    "marketSize": "Market size description",
-    "competitors": ["Competitor 1", "Competitor 2", ...],
-    "pricingStrategy": "Pricing strategy description"
-  },
-  "customerInsights": {
-    "personas": [
-      {
-        "name": "Persona Name",
-        "demographics": "Age, location, income, etc.",
-        "psychographics": "Values, interests, lifestyle",
-        "painPoints": ["Pain point 1", ...],
-        "goals": ["Goal 1", ...],
-        "acquisitionChannels": ["Channel 1", ...]
-      }
-    ],
-    "customerJourney": ["Stage 1", "Stage 2", ...]
-  },
-  "productStrategy": {
-    "mvpFeatures": ["Feature 1", "Feature 2", ...],
-    "roadmap": {
-      "month1": ["Task 1", ...],
-      "month3": ["Task 1", ...],
-      "month6": ["Task 1", ...]
-    },
-    "techRequirements": ["Requirement 1", ...]
-  },
-  "marketingGrowth": {
-    "goToMarket": "Go-to-market strategy",
-    "contentThemes": ["Theme 1", ...],
-    "socialStrategy": "Social media strategy",
-    "emailSequence": ["Email 1 concept", ...]
-  },
-  "financials": {
-    "revenueModel": "Revenue model description",
-    "costStructure": ["Cost 1", ...],
-    "breakEven": "Break-even analysis",
-    "fundingNeeds": "Funding requirements"
-  },
-  "operations": {
-    "keyMetrics": ["Metric 1", ...],
-    "teamStructure": ["Role 1", ...],
-    "techStack": ["Tool 1", ...],
-    "risks": ["Risk 1", ...]
-  }
-}
-
-Be specific, actionable, and realistic. Consider industry trends, market dynamics, and competitive landscape. Provide data-driven insights where possible.`,
-      prompt: `Business Idea: ${input.idea}
-Industry: ${input.industry || "Not specified"}
-Target Market: ${input.targetMarket || "Not specified"}
-Budget: ${input.budget || "Not specified"}
-
-Generate a comprehensive, professional-grade business strategy for this idea. Focus on actionable insights and realistic projections.`,
-    })
-
-    return JSON.parse(text)
   } catch (error) {
-    console.error("Error generating comprehensive strategy:", error)
-    // Fallback to enhanced demo strategy if AI fails
+    console.error("Error calling backend API:", error)
+    // Fallback to enhanced demo strategy if backend call fails
     return generateDemoStrategy(input)
   }
 }
