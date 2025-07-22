@@ -1,12 +1,38 @@
-import { IsString, IsIn } from 'class-validator';
+// autothinker_backend/src/generate/dto/generate.dto.ts
+import { IsString, IsIn, IsOptional, IsNumber, IsEnum } from 'class-validator';
+import { Type } from 'class-transformer'; // Needed for Type conversion (e.g., to number)
+
+// Define enums if you have specific allowed values for mode/output_format
+export enum Mode {
+  MVP = 'MVP',
+  DETAILED = 'DETAILED',
+  // Add other modes as needed
+}
+
+export enum OutputFormat {
+  JSON = 'JSON',
+  TEXT = 'TEXT',
+  // Add other formats as needed
+}
 
 export class GenerateDto {
   @IsString()
   idea: string;
 
-  @IsIn(['branding', 'funnel', 'all']) // Matches modes defined in docs
-  mode: 'branding' | 'funnel' | 'all';
+  @IsString()
+  industry: string; // Added
 
-  @IsIn(['react', 'json', 'pdf']) // Matches output_format from docs
-  output_format: 'react' | 'json' | 'pdf'; // For MVP, we'll return JSON, format will be handled later
+  @IsString()
+  targetMarket: string; // Added
+
+  @IsNumber()
+  @IsOptional() // Make budget optional for now, adjust as needed
+  @Type(() => Number) // Ensure it's transformed to a number if coming as string
+  budget?: number; // Added
+
+  @IsEnum(Mode)
+  mode: Mode;
+
+  @IsEnum(OutputFormat)
+  output_format: OutputFormat;
 }
