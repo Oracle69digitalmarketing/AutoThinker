@@ -1,3 +1,4 @@
+// src/components/idea-input.tsx
 "use client"
 
 import { useState } from "react"
@@ -19,6 +20,8 @@ export function IdeaInput() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [showApiKeyWarning, setShowApiKeyWarning] = useState(false)
+  // New state for loading stage
+  const [loadingStage, setLoadingStage] = useState<string | null>(null);
   const { setStrategy } = useStrategyStore()
 
   const industries = [
@@ -41,26 +44,41 @@ export function IdeaInput() {
 
     setIsGenerating(true)
     setShowApiKeyWarning(false)
+    setLoadingStage("Initializing AI...") // Start loading stage
 
     try {
-      const result = await generateComprehensiveStrategy({
+      // Simulate stages for better user feedback
+      // In a real streaming scenario, these would update as data arrives
+      const strategyPromise = generateComprehensiveStrategy({
         idea,
         industry,
         targetMarket,
         budget,
-      })
+        mode: 'all', // Assuming 'all' for comprehensive strategy
+        output_format: 'json', // Assuming 'json' output
+      });
 
-      // Check if we got a demo response (indicates no API key)
-      if (!process.env.OPENAI_API_KEY) {
-        setShowApiKeyWarning(true)
-      }
+      // Update stage after a short delay (simulating backend call initiation)
+      setTimeout(() => setLoadingStage("Contacting backend & AI engine..."), 500);
+
+      const result = await strategyPromise;
+
+      setTimeout(() => setLoadingStage("Analyzing idea & generating blueprint..."), 2000); // Simulate AI thinking
+
+      // Since our backend handles the demo fallback, we only show warning if backend explicitly says there's an issue with its key
+      // If the result is the demo, the backend generated it, not this frontend check
+      // We assume the backend would return a specific error if its key was missing and it didn't fall back to demo.
+      // For now, removing the direct process.env.OPENAI_API_KEY check here.
 
       setStrategy(result)
+      setLoadingStage("Strategy generated! Displaying results...") // Final stage
     } catch (error) {
       console.error("Error generating strategy:", error)
-      setShowApiKeyWarning(true)
+      setShowApiKeyWarning(true) // Show a generic warning on error
+      setLoadingStage("Error generating strategy.") // Error stage
     } finally {
       setIsGenerating(false)
+      setTimeout(() => setLoadingStage(null), 3000); // Clear stage after a delay
     }
   }
 
@@ -110,12 +128,7 @@ export function IdeaInput() {
           <Alert className="border-orange-200 bg-orange-50">
             <AlertTriangle className="h-4 w-4 text-orange-600" />
             <AlertDescription className="text-orange-800">
-              <strong>Demo Mode:</strong> Using sample strategy data. To get AI-powered results, add your OPENAI_API_KEY
-              to environment variables.
-              <br />
-              <code className="text-xs bg-orange-100 px-1 py-0.5 rounded mt-1 inline-block">
-                OPENAI_API_KEY=sk-your-key-here
-              </code>
+              <strong>Generation Error:</strong> Failed to get strategy from the AI. This might be due to a backend issue or a missing API key. Please check your backend logs or ensure API key is configured.
             </AlertDescription>
           </Alert>
         )}
@@ -129,13 +142,14 @@ export function IdeaInput() {
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
               className="min-h-32 pr-12"
+              disabled={isGenerating} // Disable during generation
             />
             <Button
               variant="ghost"
               size="sm"
               className="absolute top-2 right-2"
               onClick={startVoiceInput}
-              disabled={isListening}
+              disabled={isListening || isGenerating} // Disable during generation
             >
               {isListening ? <MicOff className="w-4 h-4 text-red-500" /> : <Mic className="w-4 h-4" />}
             </Button>
@@ -146,7 +160,7 @@ export function IdeaInput() {
         <div className="grid md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <label className="text-sm font-medium">Industry</label>
-            <Select value={industry} onValueChange={setIndustry}>
+            <Select value={industry} onValueChange={setIndustry} disabled={isGenerating}>
               <SelectTrigger>
                 <SelectValue placeholder="Select industry" />
               </SelectTrigger>
@@ -166,11 +180,12 @@ export function IdeaInput() {
               value={targetMarket}
               onChange={(e) => setTargetMarket(e.target.value)}
               className="h-10"
+              disabled={isGenerating} // Disable during generation
             />
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium">Initial Budget</label>
-            <Select value={budget} onValueChange={setBudget}>
+            <Select value={budget} onValueChange={setBudget} disabled={isGenerating}>
               <SelectTrigger>
                 <SelectValue placeholder="Select budget range" />
               </SelectTrigger>
@@ -195,6 +210,8 @@ export function IdeaInput() {
                 variant="outline"
                 className="cursor-pointer hover:bg-blue-50"
                 onClick={() => setIdea(example)}
+                // Disable example badges during generation
+                style={{ pointerEvents: isGenerating ? 'none' : 'auto', opacity: isGenerating ? 0.6 : 1 }}
               >
                 {example}
               </Badge>
@@ -202,7 +219,7 @@ export function IdeaInput() {
           </div>
         </div>
 
-        {/* Generate Button */}
+        {/* Generate Button with Enhanced Loading Message */}
         <Button
           onClick={handleGenerate}
           disabled={!idea.trim() || isGenerating}
@@ -211,7 +228,7 @@ export function IdeaInput() {
           {isGenerating ? (
             <>
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Generating Comprehensive Strategy...
+              {loadingStage || "Generating Comprehensive Strategy..."}
             </>
           ) : (
             <>
