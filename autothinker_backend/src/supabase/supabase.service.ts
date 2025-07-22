@@ -9,9 +9,8 @@ export class SupabaseService {
 
   constructor(private configService: ConfigService) {
     this.supabase = createClient(
-      // Corrected: call the getter methods
-      this.configService.getSupabaseUrl(),
-      this.configService.getSupabaseAnonKey()
+      this.configService.getSupabaseUrl(),    // CORRECTED LINE
+      this.configService.getSupabaseAnonKey() // CORRECTED LINE
     );
   }
 
@@ -19,10 +18,9 @@ export class SupabaseService {
     return this.supabase;
   }
 
-  // Example: Save a strategy (you'll integrate this in generate controller)
   async saveStrategy(data: any): Promise<any> {
     const { data: result, error } = await this.supabase
-      .from('strategies') // Replace 'strategies' with your actual table name
+      .from('strategies') // Replace 'strategies' with your actual table name if different
       .insert([data]);
 
     if (error) {
