@@ -1,25 +1,15 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { ConfigModule as NestConfigModule } from '@nestjs/config';
+import { ConfigService } from './config.service';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  // Enable CORS for your Vercel frontend
-  app.enableCors({
-    origin: 'https://v0-let-s-build-ruby.vercel.app', // Your Vercel frontend URL
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
-
-  // Apply global validation pipe for DTOs
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
-
-  // Use process.env.PORT for Render deployment environment
-  await app.listen(process.env.PORT || 3000);
-}
-bootstrap();
+@Module({
+  imports: [
+    NestConfigModule.forRoot({
+      envFilePath: ['.env'], // Load .env file
+      isGlobal: true, // Make ConfigService available everywhere
+    }),
+  ],
+  providers: [ConfigService],
+  exports: [ConfigService],
+})
+export class AppConfigModule {}
