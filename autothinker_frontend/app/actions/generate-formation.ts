@@ -1,3 +1,4 @@
+// autothinker_frontend/app/actions/generate-formation.ts
 "use server"
 
 import { generateText } from "ai"
@@ -6,6 +7,7 @@ import { openai } from "@ai-sdk/openai"
 interface FormationInput {
   businessName: string
   businessType: string
+  country: string // NEW: Add country to the input interface
   state: string
 }
 
@@ -53,8 +55,10 @@ Return as JSON with this structure:
     }
   ]
 }`,
+    // NEW: Include Country in the prompt
     prompt: `Business Name: ${input.businessName}
 Entity Type: ${input.businessType}
+Country: ${input.country}
 State: ${input.state}
 
 Create a detailed business formation plan.`,
