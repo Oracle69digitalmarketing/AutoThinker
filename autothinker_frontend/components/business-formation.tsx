@@ -30,7 +30,7 @@ export function BusinessFormation() {
   // NEW: States for fetching country data
   const [allCountries, setAllCountries] = useState<CountryData[]>([]);
   const [availableStates, setAvailableStates] = useState<string[]>([]);
-  const [loadingCountries, setLoadingCountries] = true);
+  const [loadingCountries, setLoadingCountries] = useState(true);
   const [errorCountries, setErrorCountries] = useState<string | null>(null);
 
   // Define your backend API base URL from environment variables
@@ -376,7 +376,7 @@ export function BusinessFormation() {
                             </div>
                           </div>
                         </div>
-                        </div>
+
                         <div>
                           <h4 className="font-semibold mb-3">Ongoing Annual Costs</h4>
                           <div className="space-y-2">
@@ -423,7 +423,7 @@ export function BusinessFormation() {
                               </Button>
                             ))}
                           </div>
-                          </div>
+                        </div>
                       ))}
                     </div>
                   )}
@@ -432,3 +432,7 @@ export function BusinessFormation() {
             </TabsContent>
           </Tabs>
         </div>
+      )}
+    </div>
+  )
+}
