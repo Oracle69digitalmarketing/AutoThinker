@@ -3,13 +3,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GenerateModule } from './generate/generate.module';
-import { ConfigAppModule } from './config/config.module'; // Make sure this is imported if you renamed
-// Other imports like AuthModule, UsersModule, etc.
+import { ConfigAppModule } from './config/config.module';
+import { LocationModule } from './location/location.module'; // NEW: Import LocationModule
 
 @Module({
   imports: [
-    ConfigAppModule, // Ensure this module is imported if you made it non-global or renamed
+    ConfigAppModule,
     GenerateModule,
+    LocationModule, // NEW: Add LocationModule to imports
     // Other modules
   ],
   controllers: [AppController],
