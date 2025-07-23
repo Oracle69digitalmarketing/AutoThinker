@@ -431,4 +431,8 @@ export function BusinessFormation() {
               </Card>
             </TabsContent>
           </Tabs>
-        </div
+        </div>
+      )}
+    </div>
+  )
+}
