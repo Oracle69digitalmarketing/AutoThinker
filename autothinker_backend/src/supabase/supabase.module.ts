@@ -1,10 +1,11 @@
+// autothinker_backend/src/supabase/supabase.module.ts
 import { Module } from '@nestjs/common';
 import { SupabaseService } from './supabase.service';
-import { AppConfigModule } from '../config/config.module';
+import { ConfigAppModule } from '../config/config.module'; // CORRECTED IMPORT
 
 @Module({
-  imports: [AppConfigModule],
+  imports: [ConfigAppModule], // Ensure ConfigAppModule is imported here
   providers: [SupabaseService],
-  exports: [SupabaseService], // Make SupabaseClient available to other modules
+  exports: [SupabaseService], // SupabaseService needs to be exported if other modules (like GenerateModule) use it
 })
 export class SupabaseModule {}
