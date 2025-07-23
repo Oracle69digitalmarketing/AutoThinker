@@ -310,7 +310,6 @@ export function BusinessFormation() {
                           ))}
                         </ul>
                       </div>
-                    </div>
                   )}
                 </CardContent>
               </Card>
