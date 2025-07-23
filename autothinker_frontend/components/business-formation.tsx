@@ -423,7 +423,7 @@ export function BusinessFormation() {
                               </Button>
                             ))}
                           </div>
-                      
+                          </div>
                       ))}
                     </div>
                   )}
