@@ -1,6 +1,8 @@
+// autothinker_frontend/components/BusinessFormation.tsx
 "use client"
 
-import { useState } from "react"
+import React, { useState, useEffect } from "react" // Import React and useEffect
+import axios from 'axios' // Import axios for API calls
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,24 +10,75 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CheckCircle, FileText, DollarSign, Shield, Building, ExternalLink, AlertTriangle } from "lucide-react"
-import { generateFormationPlan } from "@/app/actions/generate-formation"
+import { generateFormationPlan } from "@/app/actions/generate-formation" // Your backend action
+
+// Define types for fetched country data
+interface CountryData {
+  code: string;
+  name: string;
+  states: string[];
+}
 
 export function BusinessFormation() {
   const [businessName, setBusinessName] = useState("")
   const [businessType, setBusinessType] = useState("")
-  const [state, setState] = useState("")
+  const [country, setCountry] = useState("") // NEW: State for selected country
+  const [state, setState] = useState("") // Existing state, will now hold the selected state/province
   const [formationPlan, setFormationPlan] = useState<any>(null)
   const [isGenerating, setIsGenerating] = useState(false)
 
+  // NEW: States for fetching country data
+  const [allCountries, setAllCountries] = useState<CountryData[]>([]);
+  const [availableStates, setAvailableStates] = useState<string[]>([]);
+  const [loadingCountries, setLoadingCountries] = useState(true);
+  const [errorCountries, setErrorCountries] = useState<string | null>(null);
+
+  // Define your backend API base URL from environment variables
+  const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:3000'; // Fallback for local dev
+
+  // Effect to fetch all countries on component mount
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        setLoadingCountries(true);
+        const response = await axios.get<CountryData[]>(`${BACKEND_API_URL}/locations/countries`);
+        setAllCountries(response.data);
+      } catch (err) {
+        console.error('Failed to fetch countries:', err);
+        setErrorCountries('Failed to load countries. Please refresh.');
+      } finally {
+        setLoadingCountries(false);
+      }
+    };
+    fetchCountries();
+  }, [BACKEND_API_URL]); // Depend on BACKEND_API_URL to refetch if it changes (unlikely in prod)
+
+  // Effect to update available states when country selection changes
+  useEffect(() => {
+    if (country) {
+      const selectedCountry = allCountries.find(c => c.code === country);
+      setAvailableStates(selectedCountry ? selectedCountry.states : []);
+      // Reset state if the current one is not in the new list of states for the selected country
+      if (selectedCountry && !selectedCountry.states.includes(state)) {
+        setState(""); // Reset state
+      }
+    } else {
+      setAvailableStates([]);
+      setState(""); // Reset state if no country is selected
+    }
+  }, [country, allCountries, state]); // Include state in dependency array to avoid stale closure warning
+
   const handleGenerateFormation = async () => {
-    if (!businessName.trim() || !businessType || !state) return
+    if (!businessName.trim() || !businessType || !country || !state) return // NEW: Validate country and state
 
     setIsGenerating(true)
     try {
-      const plan = await generateFormationPlan({ businessName, businessType, state })
+      // NEW: Pass country to your generateFormationPlan action
+      const plan = await generateFormationPlan({ businessName, businessType, country, state })
       setFormationPlan(plan)
     } catch (error) {
       console.error("Error generating formation plan:", error)
+      // Optionally display a user-friendly error message
     } finally {
       setIsGenerating(false)
     }
@@ -39,7 +92,7 @@ export function BusinessFormation() {
     { value: "sole-proprietorship", label: "Sole Proprietorship" },
   ]
 
-  const states = ["Delaware", "California", "New York", "Texas", "Florida", "Nevada", "Wyoming"]
+  // The 'states' array is now dynamic, so it's removed from here
 
   const formationSteps = [
     { id: "entity", name: "Choose Entity Type", status: "completed", icon: Building },
@@ -49,6 +102,36 @@ export function BusinessFormation() {
     { id: "banking", name: "Open Business Bank Account", status: "pending", icon: Building },
     { id: "compliance", name: "Ongoing Compliance", status: "pending", icon: CheckCircle },
   ]
+
+  if (loadingCountries) {
+    return (
+      <Card>
+        <CardContent>
+          <div className="flex items-center justify-center p-8">
+            <svg className="animate-spin h-5 w-5 text-purple-600 mr-3" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Loading countries and states...
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (errorCountries) {
+    return (
+      <Card>
+        <CardContent>
+          <div className="flex items-center justify-center p-8 text-red-600">
+            <AlertTriangle className="w-5 h-5 mr-2" />
+            {errorCountries}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
 
   return (
     <div className="space-y-6">
@@ -91,26 +174,50 @@ export function BusinessFormation() {
               </Select>
             </div>
 
+            {/* NEW: Country Selection Dropdown */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">State of Formation</label>
-              <Select value={state} onValueChange={setState}>
+              <label className="text-sm font-medium">Country of Formation</label>
+              <Select value={country} onValueChange={setCountry}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select state" />
+                  <SelectValue placeholder="Select country" />
                 </SelectTrigger>
                 <SelectContent>
-                  {states.map((stateName) => (
-                    <SelectItem key={stateName} value={stateName}>
-                      {stateName}
+                  {allCountries.map((countryOption) => (
+                    <SelectItem key={countryOption.code} value={countryOption.code}>
+                      {countryOption.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+
+            {/* NEW: State/Province Selection Dropdown (Conditionally Rendered) */}
+            {country && ( // Only show if a country is selected
+              <div className="space-y-2 md:col-span-1"> {/* Adjust grid span if needed */}
+                <label className="text-sm font-medium">State/Province of Formation</label>
+                <Select value={state} onValueChange={setState} disabled={availableStates.length === 0}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select state/province" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableStates.length > 0 ? (
+                      availableStates.map((stateName) => (
+                        <SelectItem key={stateName} value={stateName}>
+                          {stateName}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="" disabled>No states/provinces available</SelectItem>
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
 
           <Button
             onClick={handleGenerateFormation}
-            disabled={!businessName.trim() || !businessType || !state || isGenerating}
+            disabled={!businessName.trim() || !businessType || !country || !state || isGenerating} // NEW: Disable if country or state is missing
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
           >
             {isGenerating ? "Creating Formation Plan..." : "Generate Formation Roadmap"}
@@ -118,6 +225,7 @@ export function BusinessFormation() {
         </CardContent>
       </Card>
 
+      {/* Existing formationPlan rendering logic remains unchanged */}
       {formationPlan && (
         <div className="space-y-6">
           {/* Formation Progress */}
@@ -277,11 +385,11 @@ export function BusinessFormation() {
                                 <span className="text-sm">{cost.item}</span>
                                 <span className="font-medium">${cost.amount}/year</span>
                               </div>
-                            ))}
-                            <div className="flex justify-between items-center p-2 bg-green-50 rounded font-semibold">
-                              <span>Total Annual</span>
-                              <span>${formationPlan.costs.annualTotal}/year</span>
                             </div>
+                          ))}
+                          <div className="flex justify-between items-center p-2 bg-green-50 rounded font-semibold">
+                            <span>Total Annual</span>
+                            <span>${formationPlan.costs.annualTotal}/year</span>
                           </div>
                         </div>
                       </div>
@@ -323,8 +431,4 @@ export function BusinessFormation() {
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
-      )}
-    </div>
-  )
-}
+        </div
