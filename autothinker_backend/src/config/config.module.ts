@@ -1,17 +1,20 @@
-// autothinker_backend/src/config/config.module.ts
-import { Module, Global } from '@nestjs/common';
-import { ConfigModule as NestConfigModule } from '@nestjs/config';
-import { ConfigService } from './config.service';
+// autothinker_backend/src/generate/generate.module.ts
+import { Module } from '@nestjs/common';
+import { GenerateController } from './generate.controller';
+import { GenerateService } from './generate.service';
+import { AiService } from '../ai/ai.service';
+import { SupabaseService } from '../supabase/supabase.service';
+import { ConfigAppModule } from '../config/config.module'; // Import ConfigAppModule
 
-@Global() // Make ConfigModule global for easy access throughout the app
 @Module({
   imports: [
-    NestConfigModule.forRoot({
-      envFilePath: process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development',
-      isGlobal: true, // Also make Nest's ConfigModule global
-    }),
+    ConfigAppModule // Import ConfigAppModule
   ],
-  providers: [ConfigService],
-  exports: [ConfigService], // IMPORTANT: Export ConfigService so other modules can use it
+  controllers: [GenerateController],
+  providers: [
+    GenerateService,
+    AiService,
+    SupabaseService,
+  ],
 })
-export class ConfigAppModule {} // Renamed to ConfigAppModule to avoid conflict with NestConfigModule
+export class GenerateModule {}
