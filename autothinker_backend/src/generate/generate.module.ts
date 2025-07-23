@@ -2,17 +2,19 @@
 import { Module } from '@nestjs/common';
 import { GenerateController } from './generate.controller';
 import { GenerateService } from './generate.service';
-import { AiService } from '../ai/ai.service'; // Import AiService
-import { SupabaseService } from '../supabase/supabase.service'; // Import SupabaseService
-import { ConfigModule } from '@nestjs/config'; // Make sure ConfigModule is imported
+import { AiService } from '../ai/ai.service';
+import { SupabaseService } from '../supabase/supabase.service';
+import { ConfigAppModule } from '../config/config.module'; // Import ConfigAppModule
 
 @Module({
-  imports: [ConfigModule], // Import ConfigModule if ConfigService is used within these providers
+  imports: [
+    ConfigAppModule // Import ConfigAppModule
+  ],
   controllers: [GenerateController],
   providers: [
-    GenerateService, // Now explicitly provided
-    AiService, // Now explicitly provided
-    SupabaseService, // Now explicitly provided
+    GenerateService,
+    AiService,
+    SupabaseService,
   ],
 })
 export class GenerateModule {}
