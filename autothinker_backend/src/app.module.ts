@@ -1,24 +1,18 @@
+// autothinker_backend/src/app.module.ts
 import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { GenerateModule } from './generate/generate.module';
-import { AppConfigModule } from './config/config.module';
-import { SupabaseModule } from './supabase/supabase.module';
-import { AiModule } from './ai/ai.module';
-import { APP_PIPE } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common'; // For DTO validation
+import { ConfigAppModule } from './config/config.module'; // Make sure this is imported if you renamed
+// Other imports like AuthModule, UsersModule, etc.
 
 @Module({
   imports: [
-    AppConfigModule, // Load config first
-    SupabaseModule,
-    AiModule,
-    GenerateModule, // Your core generation module
+    ConfigAppModule, // Ensure this module is imported if you made it non-global or renamed
+    GenerateModule,
+    // Other modules
   ],
-  controllers: [],
-  providers: [
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe, // Enable global DTO validation
-    },
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
