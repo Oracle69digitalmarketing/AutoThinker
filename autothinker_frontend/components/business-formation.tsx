@@ -30,7 +30,7 @@ export function BusinessFormation() {
   // NEW: States for fetching country data
   const [allCountries, setAllCountries] = useState<CountryData[]>([]);
   const [availableStates, setAvailableStates] = useState<string[]>([]);
-  const [loadingCountries, setLoadingCountries] = useState(true);
+  const [loadingCountries, setLoadingCountries] = true);
   const [errorCountries, setErrorCountries] = useState<string | null>(null);
 
   // Define your backend API base URL from environment variables
@@ -310,6 +310,7 @@ export function BusinessFormation() {
                           ))}
                         </ul>
                       </div>
+                    </div>
                   )}
                 </CardContent>
               </Card>
@@ -375,7 +376,7 @@ export function BusinessFormation() {
                             </div>
                           </div>
                         </div>
-
+                        </div>
                         <div>
                           <h4 className="font-semibold mb-3">Ongoing Annual Costs</h4>
                           <div className="space-y-2">
@@ -384,11 +385,11 @@ export function BusinessFormation() {
                                 <span className="text-sm">{cost.item}</span>
                                 <span className="font-medium">${cost.amount}/year</span>
                               </div>
+                            ))}
+                            <div className="flex justify-between items-center p-2 bg-green-50 rounded font-semibold">
+                              <span>Total Annual</span>
+                              <span>${formationPlan.costs.annualTotal}/year</span>
                             </div>
-                          ))}
-                          <div className="flex justify-between items-center p-2 bg-green-50 rounded font-semibold">
-                            <span>Total Annual</span>
-                            <span>${formationPlan.costs.annualTotal}/year</span>
                           </div>
                         </div>
                       </div>
@@ -422,7 +423,7 @@ export function BusinessFormation() {
                               </Button>
                             ))}
                           </div>
-                        </div>
+                      
                       ))}
                     </div>
                   )}
@@ -431,7 +432,3 @@ export function BusinessFormation() {
             </TabsContent>
           </Tabs>
         </div>
-      )}
-    </div>
-  )
-}
