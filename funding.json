@@ -5,7 +5,7 @@
     "role": "maintainer",
     "name": "Prince Adewumi Adewale",
     "email": "adewaleadewumi@oracle69.com",
-    "description": "A digital strategist and developer focused on building intelligent, scalable solutions that merge technology and business strategy. This work is built on FOSS principles.",
+    "description": "A digital strategist and developer focused on building intelligent, scalable platforms. We merge tech and business strategy to drive growth, built on FOSS principles.",
     "webpageUrl": {
       "url": "https://oracle69.com",
       "wellKnown": "https://oracle69.com/.well-known/funding-manifest-urls"
@@ -32,6 +32,7 @@
         "ai",
         "automation",
         "productivity",
+        "dev-tools",
         "saas"
       ]
     }
@@ -50,7 +51,7 @@
         "guid": "autothinker-general-support",
         "status": "active",
         "name": "General AutoThinker Support",
-        "description": "A recurring contribution to cover essential operational costs, including API access and core maintenance specifically for the AutoThinker project.",
+        "description": "A recurring contribution to cover essential operational costs like API access and core maintenance for the AutoThinker project.",
         "amount": 0,
         "currency": "USD",
         "frequency": "monthly",
@@ -62,7 +63,7 @@
         "guid": "autothinker-autonomous-grant",
         "status": "active",
         "name": "Autonomous Systems Grant",
-        "description": "A strategic one-time grant to fund the research and development of new autonomous task execution and reporting engines.",
+        "description": "A one-time grant to fund research and development of new autonomous task execution and reporting engines.",
         "amount": 12000,
         "currency": "USD",
         "frequency": "one-time",
