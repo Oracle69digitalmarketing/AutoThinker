@@ -1,0 +1,76 @@
+{
+  "version": "v1.0.0",
+  "entity": {
+    "type": "individual",
+    "role": "maintainer",
+    "name": "Prince Adewumi Adewale",
+    "email": "adewaleadewumi@oracle69.com",
+    "description": "A digital strategist and developer focused on building intelligent, scalable solutions that merge technology and business strategy. This work is built on FOSS principles.",
+    "webpageUrl": {
+      "url": "https://oracle69.com",
+      "wellKnown": "https://oracle69.com/.well-known/funding-manifest-urls"
+    }
+  },
+  "projects": [
+    {
+      "guid": "autothinker",
+      "name": "AutoThinker",
+      "description": "An open-source AI platform that transforms concepts into actionable plans and project roadmaps. It streamlines the ideation-to-action pipeline for developers and entrepreneurs.",
+      "webpageUrl": {
+        "url": "https://oracle69.com/autothinker",
+        "wellKnown": "https://oracle69.com/.well-known/funding-manifest-urls"
+      },
+      "repositoryUrl": {
+        "url": "https://github.com/Oracle69digitalmarketing/AutoThinker",
+        "wellKnown": "https://oracle69.com/.well-known/funding-manifest-urls"
+      },
+      "licenses": [
+        "spdx:MIT",
+        "spdx:Apache-2.0"
+      ],
+      "tags": [
+        "ai",
+        "automation",
+        "productivity",
+        "saas"
+      ]
+    }
+  ],
+  "funding": {
+    "channels": [
+      {
+        "guid": "open-collective",
+        "type": "payment-provider",
+        "address": "https://opencollective.com/oracle69-projects",
+        "description": "Support our collection of FOSS projects through our Open Collective page. All funds are publicly accounted for and directly support project growth and maintenance."
+      }
+    ],
+    "plans": [
+      {
+        "guid": "autothinker-general-support",
+        "status": "active",
+        "name": "General AutoThinker Support",
+        "description": "A recurring contribution to cover essential operational costs, including API access and core maintenance specifically for the AutoThinker project.",
+        "amount": 0,
+        "currency": "USD",
+        "frequency": "monthly",
+        "channels": [
+          "open-collective"
+        ]
+      },
+      {
+        "guid": "autothinker-autonomous-grant",
+        "status": "active",
+        "name": "Autonomous Systems Grant",
+        "description": "A strategic one-time grant to fund the research and development of new autonomous task execution and reporting engines.",
+        "amount": 12000,
+        "currency": "USD",
+        "frequency": "one-time",
+        "channels": [
+          "open-collective"
+        ]
+      }
+    ],
+    "history": []
+  }
+}
