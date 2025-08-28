@@ -1,30 +1,33 @@
-# Let's build
+​# AutoThinker
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+​The AI Engine for Actionable Ideas.
+​[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/prince-adewumi-adewale/autothinker)
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/sophiemabel69-5227s-projects/v0-let-s-build)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/8enugbUXaxc)
+​## Overview
 
-## Overview
+​**AutoThinker** is an open-source AI platform that transforms abstract concepts into concrete, actionable project roadmaps. Designed for entrepreneurs and developers, this tool streamlines the ideation-to-action pipeline, helping you move from a raw idea to a structured, executable plan in minutes. It's built to accelerate innovation and turn vision into reality.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+​## Key Features
 
-## Deployment
+​Intelligent Idea Mapping: Automatically generate structured mind maps and concept trees from a simple text prompt.
+​Actionable Roadmaps: Instantly transform high-level ideas into detailed, step-by-step project plans and task lists.
+​Autonomous Reporting: Automate project reports and progress summaries to keep your team and stakeholders informed.
+​Integrated Workflow: Connect AutoThinker to your existing tools and services via a flexible API to unify your workflow.
 
-Your project is live at:
+​## Get Started
 
-**[https://vercel.com/sophiemabel69-5227s-projects/v0-let-s-build](https://vercel.com/sophiemabel69-5227s-projects/v0-let-s-build)**
+​AutoThinker is a FOSS project in active development. We welcome all who want to explore its engine and contribute to its growth.
 
-## Build your app
+​**[Live Demo](https://oracle69.com/autothinker)**
 
-Continue building your app on:
+**[Vercel Deployment](https://vercel.com/prince-adewumi-adewale/autothinker)**
 
-**[https://v0.dev/chat/projects/8enugbUXaxc](https://v0.dev/chat/projects/8enugbUXaxc)**
+**[GitHub Repository](https://github.com/Oracle69digitalmarketing/AutoThinker)**
 
-## How It Works
+​## Contributing
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+​We believe in the power of collective intelligence. Your expertise can help us refine our algorithms and expand our capabilities. We welcome contributions, whether through code, bug reports, or documentation. Please see our [Contributing Guide](CONTRIBUTING.md) for details on how to get involved.
+
+​## Support Our Work
+
+​Your financial support helps us maintain the project and accelerate development. Consider making a one-time or recurring contribution through our Open Collective page.
